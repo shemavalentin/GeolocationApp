@@ -1,6 +1,16 @@
 <html>
     <head>
         <title>Positioning App</title>
+        <style>
+            #coordinates{
+                font-size: 8vw;
+            }
+            #canvas {
+                position: absolute;
+                left: 0px;
+                top:0px
+            }
+        </style>
         <script>
             function main(){
                 var geolocation = null;
@@ -51,12 +61,24 @@
                 ]
                 const location = [
                     center[0],  // wherever the x axis is 0
-                    center[1] + beta  
+                    //center[1] + (beta)
+
+                    // Let's make the circle respond to the orientation of the device according to beta angle.
+                    center[1] + (beta/180)*canvas.height/2
                 ]
                 // defining the radius
-                const radius = 100; //(px)
+                // const radius = 100; //(px)
+                // Let's make the circle resized relatively to how the latitude and longitude change
+                const radius = canvas.width * 0.1;
                 context.arc(location[0], location[1],radius,0,Math.PI*2);
                 context.stroke();
+
+                // writting text in the circle 
+
+                context.font = radius +"px Arial";
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+                context.fillText("beta", location[0], location[1]);
             }
 
 
@@ -64,7 +86,7 @@
                 // console.log(event);
                 // Defining the variable to hold the info in the dev tools
 
-                var str = "Latitude: "+event.coords.latitude+ " "+
+                var str = "Latitude: "+event.coords.latitude+ " <br>"+
                         "Longitude: " + event.coords.longitude;
 
                         // Getting the data in the form now
