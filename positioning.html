@@ -19,13 +19,56 @@
                    
                 }
                 else{
-                    alert("Error with geolocation")
-                    
+                    alert("Error with geolocation")                
                 }
+
+                // Adding the event listener for the device orientation
+                window.addEventListener("deviceorientation", onOrientationChange)
             }
+
+            // Function for event handler
+            function onOrientationChange(event){
+                // console.log(event);
+                var beta = event.beta;
+
+                // Every time the orientation changes, we need to take this changes from the canvas
+                const canvas = document.getElementById("canvas");
+
+                // let's make the canvas display fullscreen
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                // let's try to get the context: the context is an object that helps to draw on the canvas in 2d
+                const context = canvas.getContext("2d");
+
+                // Now with the context we can draw the arc or the circle
+                context.beginPath();
+
+                //=> I'm going to drow the circle in the middle of the screen(location)
+                const center = [
+                    canvas.width/2,
+                    canvas.height/2
+                ]
+                const location = [
+                    center[0],  // wherever the x axis is 0
+                    center[1] + beta  
+                ]
+                // defining the radius
+                const radius = 100; //(px)
+                context.arc(location[0], location[1],radius,0,Math.PI*2);
+                context.stroke();
+            }
+
+
             function onLocationUpdate(event){
-                console.log(event);
-                    
+                // console.log(event);
+                // Defining the variable to hold the info in the dev tools
+
+                var str = "Latitude: "+event.coords.latitude+ " "+
+                        "Longitude: " + event.coords.longitude;
+
+                        // Getting the data in the form now
+                        document.getElementById("coordinates").innerHTML = str;                   
             }
             
         </script>
@@ -34,5 +77,11 @@
     before the page fully loads,  we need to define a function that will handle loads in the body-->
     <body onload="main()">
         <h1>Positioning calculator</h1>
+
+        <!-- // To display the information from the dev tool let's output them -->
+         <div id = "coordinates"></div>
+
+          <!-- to make some animation let's use canvas -->
+         <canvas id="canvas"></canvas>
     </body>
 </html>
