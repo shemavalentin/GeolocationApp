@@ -10,8 +10,13 @@
                 }
                 // If we have the geolocation we can start use it
                 if(geolocation){
-                    geolocation.getCurrentPosition(onLocationUpdate);  // this getCurrentPosition function expect a callback function
-                    
+                    //  Now after, instead of getting the current location, let calculate the the coordinate every time I'm changing the location even when 1 step.
+                    // geolocation.getCurrentPosition(onLocationUpdate);  // this getCurrentPosition function expect a callback function
+
+                    geolocation.watchPosition(onLocationUpdate)  // Now the coordinates is changing as we move or as we read from the sattelite or cell tower
+
+                    // Now the codes are doing more in the background such as relativistic effect, physics
+                   
                 }
                 else{
                     alert("Error with geolocation")
